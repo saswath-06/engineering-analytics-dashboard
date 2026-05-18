@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+*.pkl
+model_meta.json
+
+# Node
+node_modules/
+dist/
+.cache/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Docker
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code local settings
+.claude/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Stray lockfiles
+/package-lock.json

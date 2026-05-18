@@ -1,0 +1,85 @@
+version: "3.9"
+
+networks:
+  analytics:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    networks: [analytics]
+    environment:
+      POSTGRES_DB: analytics
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    networks: [analytics]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  ingestion:
+    build: ./ingestion-service
+    networks: [analytics]
+    ports:
+      - "8001:8001"
+    environment:
+      REDIS_URL: redis://redis:6379
+      GITHUB_WEBHOOK_SECRET: ""
+      AGGREGATION_URL: http://aggregation:8002
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  aggregation:
+    build: ./aggregation-service
+    networks: [analytics]
+    ports:
+      - "8002:8002"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:dev@postgres:5432/analytics
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+
+  ml:
+    build: ./ml-service
+    networks: [analytics]
+    ports:
+      - "8003:8003"
+    environment:
+      MODEL_PATH: model.pkl
+      PREDICTION_THRESHOLD: "0.5"
+
+  frontend:
+    image: node:20-alpine
+    networks: [analytics]
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    environment:
+      INGESTION_URL: http://ingestion:8001
+      AGGREGATION_URL: http://aggregation:8002
+      ML_URL: http://ml:8003
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+
+volumes:
+  pg_data:

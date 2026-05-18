@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Engineering Analytics</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><rect width='20' height='20' rx='5' fill='%23090e1a'/><path d='M2 10h3l2-4 2 8 2-6 2 3h5' stroke='%234f8ef7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            colors: {
+              base:    "#090e1a",
+              surface: "#0f1628",
+              raised:  "#162035",
+              border:  "#1e2d47",
+              border2: "#253552",
+              text:    "#c8d3e8",
+              subtle:  "#8694ae",
+              faint:   "#4a5670",
+              blue:    "#4f8ef7",
+              "blue-dim": "#1a3a7a",
+              red:     "#f25c54",
+              "red-dim":  "#3d1414",
+              green:   "#34c472",
+              "green-dim": "#0e3321",
+              amber:   "#f0a429",
+              "amber-dim": "#3d2700",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html, body { background: #090e1a; color: #c8d3e8; margin: 0; padding: 0; }
+      * { font-family: "Plus Jakarta Sans", sans-serif; box-sizing: border-box; }
+      .font-mono { font-family: "JetBrains Mono", monospace; }
+
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #090e1a; }
+      ::-webkit-scrollbar-thumb { background: #1e2d47; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #253552; }
+
+      .table-row { transition: background 120ms ease; }
+      .table-row:hover { background: rgba(79, 142, 247, 0.04); }
+
+      @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
+      .live-dot { animation: pulse-dot 2s ease-in-out infinite; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
